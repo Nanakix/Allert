@@ -1,7 +1,7 @@
 <?php
     $functions = array("signaler", "voter", "getDangers", "getType", "getTypes");
 
-    function signaler()
+    /*function signaler()
     {
         if(!((empty($_POST['id'])) || (empty($_POST['pos'])) || (empty($_POST['type'])) || (empty($_POST['description']))))
         {
@@ -35,12 +35,13 @@
         }
 
     }
-
+    */
     function getTypes()
     {
-        
+        echo 'getTypes';
     }
 
+    /*
     if(!empty($_POST))      
     { 
         if(!empty($_POST['f']))
@@ -50,6 +51,24 @@
             
     }
 
-
-
+*/
+    /* Appelle la fonction d'e l'api appropriée */
+    if(isset($_GET['f']) && $_GET['f'] != NULL)
+    {
+        /* La fonction est valide, on l'appelle */
+        if(in_array($_GET['f'], $functions))
+        {
+            $_GET['f']();
+        }
+        /* La fonction n'existe pas dans l'api */
+        else
+        {
+            echo 'invalid function';
+        }
+    }
+    /* Aucune fonction n'a été fournie à l'api */
+    else
+    {
+        echo "error no function specified";
+    }
 ?>
