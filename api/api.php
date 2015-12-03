@@ -1,4 +1,6 @@
 <?php
+    require("bdd.php");
+
     $functions = array("signaler", "voter", "getDangers", "getType", "getTypes");
 
     /*function signaler()
@@ -39,19 +41,23 @@
     function getTypes()
     {
         echo 'getTypes';
-    }
+        $reponse = $bdd->query('SELECT * FROM TypeDanger');
 
-    /*
-    if(!empty($_POST))      
-    { 
-        if(!empty($_POST['f']))
+        // On affiche chaque entrée une à une
+        while ($donnees = $reponse->fetch())
         {
-            $func = $_POST['f'];
-            $functions[$func]();
-            
+        ?>
+            <p>
+            <?php echo $donnees['id']; ?><br />
+            <?php echo $donnees['nom']; ?><br />
+            <?php echo $donnees['coef_de_gravite']; ?> <br />
+           </p>
+        <?php
+        }
+
+        $reponse->closeCursor(); // Termine le traitement de la requête
     }
 
-*/
     /* Appelle la fonction d'e l'api appropriée */
     if(isset($_GET['f']) && $_GET['f'] != NULL)
     {
