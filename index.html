@@ -18,7 +18,19 @@
   
   
   <body id="css-zen-garden">
-  
+	<script>
+		function updateFeed() {
+			var xhttp = new XMLHttpRequest();
+			xhttp.onreadystatechange = function() {
+				if (xhttp.readyState == 4 && xhttp.status == 200) {
+					$feed = document.getElementById("feed-infos").innerHTML = xhttp.responseText;
+					
+				}
+			};
+			xhttp.open("GET", "/api/api.php?f=getDangers", true);
+			xhttp.send();
+		}
+	</script>
   
 		<header role="banner">
 			
@@ -30,7 +42,7 @@
 		
 
 		
-		<div class="liste-infos">
+		<div id="liste-infos">
 			<ul>Légende
 			<li data-type="fire">DU FEU ! </li> 
 			<li data-type="water"> DE L'EAU ! </li>
@@ -42,20 +54,9 @@
 			
 		</div>
 		
-		<div class="feed-infos">
+		<div id="feed-infos">
 			<ul>
-			<li>coucou</li>
-			<li>coucou</li>
-			<li>coucou</li>
-			<li>coucou</li>
-			<li>coucou</li>
-			<li>coucou</li>
-			<li>coucou</li>
-			<li>coucou</li>
-			<li>coucou</li>
-			<li>coucou</li>
-			<li>coucou</li>
-			<li>coucou</li>
+			<li>tamere</li>
 		</div>
 
   </body>
