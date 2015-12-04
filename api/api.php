@@ -16,7 +16,7 @@
         {
             try
             {
-                $bdd = new PDO('mysql:host=localhost;dbname=allert;charset=utf8', 'root', '');
+                $bdd = new PDO('mysql:host=localhost;dbname=allert;charset=utf8', 'root', 'mysql');
             }
             catch(Exception $e)
             {
@@ -61,7 +61,7 @@
     {
         try
         {
-            $bdd = new PDO('mysql:host=localhost;dbname=allert;charset=utf8', 'root', '');
+            $bdd = new PDO('mysql:host=localhost;dbname=allert;charset=utf8', 'root', 'mysql');
         }
         catch(Exception $e)
         {
@@ -79,7 +79,7 @@
         if(isset($_GET['id']) && $_GET['id'] != NULL)
         try
         {
-            $bdd = new PDO('mysql:host=localhost;dbname=allert;charset=utf8', 'root', '');
+            $bdd = new PDO('mysql:host=localhost;dbname=allert;charset=utf8', 'root', 'mysql');
         }
         catch(Exception $e)
         {
@@ -97,7 +97,7 @@
     {
         try
         {
-            $bdd = new PDO('mysql:host=localhost;dbname=allert;charset=utf8', 'root', '');
+            $bdd = new PDO('mysql:host=localhost;dbname=allert;charset=utf8', 'root', 'mysql');
         }
         catch(Exception $e)
         {
