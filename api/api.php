@@ -37,11 +37,14 @@
                 'date' => ''));
                 
             //echo json_encode($reponse->fetchAll(PDO::FETCH_ASSOC));
-            echo 'ok';
+            echo 'OK';
             $reponse->closeCursor();
         }
-        echo 'manque param';
-
+        else
+        {
+            echo 'ERROR';
+        }
+        
     }
 
     /*
