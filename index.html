@@ -26,11 +26,11 @@
 					$feed = document.getElementById("feed-infos");
 					$liste = document.createElement("ul");
 					$json = JSON.parse(xhttp.responseText);
-					
-					$li = document.createElement("li");
-					$li.innerHTML = $json[1].description;
-					$liste.appendChild($li);
-					
+					for ($i in $json) {
+						$li = document.createElement("li");
+						$li.innerHTML = i.description;
+						$liste.appendChild($li);
+					}
 					$feed.appendChild($liste);
 				}
 			};
