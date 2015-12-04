@@ -1,5 +1,6 @@
 <?php
-    require("bdd.php");
+    // Reporte toutes les erreurs PHP
+    error_reporting(-1);
 
     $functions = array("signaler", "voter", "getDangers", "getType", "getTypes");
 
@@ -40,22 +41,19 @@
     */
     function getTypes()
     {
-        echo 'getTypes';
-        $reponse = $bdd->query('SELECT * FROM TypeDanger');
-
-        // On affiche chaque entrée une à une
-        while ($donnees = $reponse->fetch())
+        try
         {
-        ?>
-            <p>
-            <?php echo $donnees['id']; ?><br />
-            <?php echo $donnees['nom']; ?><br />
-            <?php echo $donnees['coef_de_gravite']; ?> <br />
-           </p>
-        <?php
+            $bdd = new PDO('mysql:host=localhost;dbname=allert;charset=utf8', 'root', '');
+        }
+        catch(Exception $e)
+        {
+            die('Erreur : '.$e->getMessage());
         }
 
-        $reponse->closeCursor(); // Termine le traitement de la requête
+        $reponse = $bdd->query('SELECT * FROM TypeDanger');
+        echo json_encode($reponse->fetchAll(PDO::FETCH_ASSOC));
+
+        $reponse->closeCursor();
     }
 
     /* Appelle la fonction d'e l'api appropriée */
