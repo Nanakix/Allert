@@ -54,7 +54,6 @@ public class DetailActivity extends AppCompatActivity implements
     private JSONObject JSON_alerte;
 
     private GoogleApiClient mGoogleApiClient;
-    //protected Location mLastLocation;
     protected Location location;
     protected LocationManager mLocationManager;
     private LocationListener mLocationListener;
@@ -77,7 +76,6 @@ public class DetailActivity extends AppCompatActivity implements
 
         commentaire = new String();
 
-        //GOOGLELOCATE
         buildGoogleApiClient();
 
         mLocationListener = new LocationListener() {
@@ -104,16 +102,7 @@ public class DetailActivity extends AppCompatActivity implements
 
         mLocationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 
-        /*
-        try {
-            mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1,
-                    1, mLocationListener);
-            //mLastLocation = mLocationManager.getLastKnownLocation(");
-            //Log.e("MAPS2", ""+ mLastLocation.getLatitude() + mLastLocation.getLongitude());
-        }catch(SecurityException e){
-            e.printStackTrace();
-        }
-        */
+
         location = getLocation();
 
 
@@ -130,14 +119,14 @@ public class DetailActivity extends AppCompatActivity implements
             types_array = (String[]) types_arrayL.toArray(types_array);
             types_level_array = (String[]) types_level_arrayL.toArray(types_level_array);
 
-            Log.e("ARRAY", id.toString());
+            Log.v("ARRAY", id.toString());
 
         }
         android_id = Settings.Secure.getString(getApplicationContext().getContentResolver(),
                 Settings.Secure.ANDROID_ID);
 
         type_spinner = (Spinner) findViewById(R.id.type_spinner);
-        //String[] types_array = {"Viol", "Feu", "Tsunami", "Autre"};
+
 
         ArrayAdapter<String> type_adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, types_array);
 
@@ -147,13 +136,7 @@ public class DetailActivity extends AppCompatActivity implements
 
         //EDIT TEXT SET
         comm_field = (EditText) findViewById(R.id.commentaire_text);
-
-        //commentaire = comm_field.getText().toString();
-
-        Log.e("COM", commentaire);
-
-
-
+        
         //GET SPINN
 
         type_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -176,7 +159,7 @@ public class DetailActivity extends AppCompatActivity implements
             @Override
             public void onClick(View v) {
                 commentaire = comm_field.getText().toString();
-                //setJObject();
+
                 sendAlerteReq();
                 Toast.makeText(DetailActivity.this,
                         "Signalement envoyé!",
@@ -237,10 +220,10 @@ public class DetailActivity extends AppCompatActivity implements
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                //mTextView.setText("That didn't work!");
+                error.printStackTrace();
             }
         });
-// Add the request to the RequestQueue.
+
         AppController.getInstance().addToRequestQueue(request, tag_string_req);
     }
 
@@ -257,30 +240,14 @@ public class DetailActivity extends AppCompatActivity implements
 
     @Override
     public void onConnected(Bundle connectionHint) {
-        /*
-        // Provides a simple way of getting a device's location and is well suited for
-        // applications that do not require a fine-grained location and that do not need location
-        // updates. Gets the best and most recent location currently available, which may be null
-        // in rare cases when a location is not available.
-        mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-        if (mLastLocation != null) {
-            //mLatitudeText.setText(String.format("%s: %f", mLatitudeLabel,
-            //        mLastLocation.getLatitude()));
-            Log.e("MAPS", "LATITUDE: " + mLastLocation.getLatitude() + " LONGITUDE: " + mLastLocation.getLongitude());
-            //mLongitudeText.setText(String.format("%s: %f", mLongitudeLabel,
-            //        mLastLocation.getLongitude()));
-        } else {
-            Toast.makeText(this, "No Location Detected", Toast.LENGTH_LONG).show();
-        }
-        */
+
     }
 
 
 
     @Override
     public void onConnectionFailed(ConnectionResult result) {
-        // Refer to the javadoc for ConnectionResult to see what error codes might be returned in
-        // onConnectionFailed.
+
         Log.i("MAPS", "Connection failed: ConnectionResult.getErrorCode() = " + result.getErrorCode());
     }
 
@@ -289,7 +256,7 @@ public class DetailActivity extends AppCompatActivity implements
     public void onConnectionSuspended(int cause) {
         // The connection to Google Play services was lost for some reason. We call connect() to
         // attempt to re-establish the connection.
-        //Log.i(TAG, "Connection suspended");
+
         mGoogleApiClient.connect();
     }
 
@@ -308,19 +275,17 @@ public class DetailActivity extends AppCompatActivity implements
             if (!isGPSEnabled && !isNetworkEnabled) {
                 // no network provider is enabled
             } else {
-                // First get location from Network Provider
 
-                //get the location by gps
                 if (isGPSEnabled) {
-                    //if (location == null) {
+
                         mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,1,1, mLocationListener);
                         Log.d("GPS Enabled", "GPS Enabled");
                         if (mLocationManager != null) {location = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
                             if (location != null) {
-                                Log.e("MAP4", location.getLatitude() + " "+ location.getLongitude());
+                                Log.v("MAP4", location.getLatitude() + " "+ location.getLongitude());
                             }
                         }
-                    //}
+
                 }
                 else if (isNetworkEnabled) {
                     mLocationManager.requestLocationUpdates( LocationManager.NETWORK_PROVIDER,  1,  1, mLocationListener);
@@ -328,7 +293,7 @@ public class DetailActivity extends AppCompatActivity implements
                     if (mLocationManager != null) {
                         location = mLocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
                         if (location != null) {
-                            Log.e("MAP3", location.getLatitude() + " "+ location.getLongitude());
+                            Log.v("MAP3", location.getLatitude() + " "+ location.getLongitude());
                         }
                     }
                 }

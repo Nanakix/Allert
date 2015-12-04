@@ -57,7 +57,7 @@ public class SigActivity extends AppCompatActivity {
                 i.putStringArrayListExtra("types_array", types);
                 i.putStringArrayListExtra("level_array", types_level);
                 i.putExtra("types_index", id);
-                Log.e("ARRB", types.toString());
+                Log.v("ARRB", types.toString());
                 startActivity(i);
             }
         });
@@ -75,13 +75,13 @@ public class SigActivity extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Log.e("TYPES RES", response.toString());
+                        Log.v("TYPES RES", response.toString());
                         try{
                             JSONArray jsonArray = new JSONArray(response);
                             for(int i =0; i<jsonArray.length(); i++){
                                 JSONObject jObj = jsonArray.getJSONObject(i);
                                 types.add(i, jObj.get("nom"));
-                                Log.e("JSON", jObj.get("nom") + " ");
+                                Log.v("JSON", jObj.get("nom") + " ");
                                 types_level.add(i, jObj.get("coef_de_gravite"));
                                 id_types.add(i, jObj.get("id"));
 
@@ -99,7 +99,7 @@ public class SigActivity extends AppCompatActivity {
                 //mTextView.setText("That didn't work!");
             }
         });
-// Add the request to the RequestQueue.
+        // Add the request to the RequestQueue.
         AppController.getInstance().addToRequestQueue(request, tag_string_req);
     }
 }
