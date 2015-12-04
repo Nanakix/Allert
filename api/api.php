@@ -4,7 +4,7 @@
 
     $functions = array("signaler", "voter", "getDangers", "getTypeWithId", "getTypes");
 
-    /*function signaler()
+    function signaler()
     {
         if(!((empty($_POST['id'])) || (empty($_POST['pos'])) || (empty($_POST['type'])) || (empty($_POST['description']))))
         {
@@ -12,6 +12,7 @@
         }
     }
 
+    /*
     function voter()
     {
         if(!((empty($_POST['id-phone'])) || (empty($_POST['id-danger'])) || (empty($_POST['vrai'])) || (empty($_POST['pos']))))
@@ -20,16 +21,24 @@
         }
     
     }
-
+    */
     function getDangers()
     {
-        if(!(empty($_POST['pos1'])) || (empty($_POST['pos2']))))
+        try
         {
-            
+            $bdd = new PDO('mysql:host=localhost;dbname=allert;charset=utf8', 'root', 'mysql');
         }
-    
+        catch(Exception $e)
+        {
+            die('Erreur : '.$e->getMessage());
+        }
+
+        $reponse = $bdd->query('SELECT * FROM Danger');
+        echo json_encode($reponse->fetchAll(PDO::FETCH_ASSOC));
+
+        $reponse->closeCursor(); 
     }
-    */
+
     function getTypeWithId()
     {
         if(isset($_GET['id']) && $_GET['id'] != NULL)
