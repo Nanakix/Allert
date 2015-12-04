@@ -28,6 +28,8 @@ public class SigActivity extends AppCompatActivity {
     private ImageButton sig_button;
     private ArrayList types;
     private ArrayList types_level;
+    private ArrayList id_types;
+    private int[] id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,15 +40,23 @@ public class SigActivity extends AppCompatActivity {
 
         types = new ArrayList();
         types_level = new ArrayList();
+        id_types = new ArrayList();
 
         getTypesReq();
+
 
         sig_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(SigActivity.this, DetailActivity.class);
+                id = new int[id_types.size()];
+                for (int x=0; x < id.length; x++)
+                {
+                    id[x] =  Integer.parseInt((String) id_types.get(x));
+                }
                 i.putStringArrayListExtra("types_array", types);
                 i.putStringArrayListExtra("level_array", types_level);
+                i.putExtra("types_index", id);
                 Log.e("ARRB", types.toString());
                 startActivity(i);
             }
@@ -73,6 +83,7 @@ public class SigActivity extends AppCompatActivity {
                                 types.add(i, jObj.get("nom"));
                                 Log.e("JSON", jObj.get("nom") + " ");
                                 types_level.add(i, jObj.get("coef_de_gravite"));
+                                id_types.add(i, jObj.get("id"));
 
                             }
 

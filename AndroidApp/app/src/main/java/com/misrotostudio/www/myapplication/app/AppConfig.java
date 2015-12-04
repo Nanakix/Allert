@@ -5,5 +5,5 @@ package com.misrotostudio.www.myapplication.app;
  */
 public class AppConfig {
 
-    public static String api_url = "http://allert.tk/Allert/api/api.php";
+    public static String api_url = "http://api.allert.tk/api.php";
 }
