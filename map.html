@@ -5,20 +5,90 @@
     
 	<meta charset="utf8">
     <script src="https://maps.googleapis.com/maps/api/js"></script>
+	<script type="text/javascript">
+document.write('<script type="text/javascript" src="http://google-maps-utility-library-v3.googlecode.com/svn/trunk/markermanager/src/markermanager.js"><'+'/script>');
+</script>
 	<script>
-function initialize() {
-  var mapProp = {
-    center:new google.maps.LatLng(51.508742,-0.120850),
-    zoom:5,
-    mapTypeId:google.maps.MapTypeId.ROADMAP
-  };
-  var map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
-}
-google.maps.event.addDomListener(window, 'load', initialize);
+	$markermanager = null;
+	function initialize() {
+		var mapProp = {
+			center:new google.maps.LatLng(51.508742,-0.120850),
+			zoom:10,
+			mapTypeId:google.maps.MapTypeId.ROADMAP
+		};
+		var map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
+  
+		$markermanager= new MarkerManager(map);
+  
+	  // Try W3C Geolocation (Preferred)
+	  if(navigator.geolocation) {
+		browserSupportFlag = true;
+		navigator.geolocation.getCurrentPosition(function(position) {
+		  initialLocation = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
+		  map.setCenter(initialLocation);
+		}, function() {
+		  handleNoGeolocation(browserSupportFlag);
+		});
+	  }
+	  // Browser doesn't support Geolocation
+	  else {
+		browserSupportFlag = false;
+		handleNoGeolocation(browserSupportFlag);
+	  }
+
+	  function handleNoGeolocation(errorFlag) {
+		if (errorFlag == true) {
+		  alert("Geolocation service failed.");
+		  initialLocation = newyork;
+		} else {
+		  alert("Your browser doesn't support geolocation. We've placed you in Siberia.");
+		  initialLocation = siberia;
+		}
+		map.setCenter(initialLocation);
+	  }
+
+	}
+	<!--google.maps.event.addDomListener(window, 'load', initialize);-->
 
 
 </script>
-
+<script>
+		function updateFeed() {
+			var xhttp = new XMLHttpRequest();
+			xhttp.onreadystatechange = function() {
+				if (xhttp.readyState == 4 && xhttp.status == 200) {
+					$feed = document.getElementById("feed-infos");
+					while($feed.firstChild){
+						$feed.removeChild($feed.firstChild);
+					}
+					$liste = document.createElement("ul");
+					$json = JSON.parse(xhttp.responseText);
+					for ($i =0; $i < $json.length; $i++)
+					{
+						$elem = $json[$i];
+						var marker = new google.maps.Marker({
+							position: new google.maps.LatLng($elem.pos_latitude, $elem.pos_longitude),
+							title: $elem.description
+							});
+						$markermanager.addMarker(marker, 0);
+					
+					/*
+						$li = document.createElement("li");
+						$attr = document.createAttribute("data-type");
+						$attr.value = $types[($json[$i].type - 1)];
+						$li.setAttributeNode($attr);
+						$li.innerHTML = $json[$i].description + " (" + $json[$i].date + ")";
+						$liste.appendChild($li);*/
+					}
+					$markermanager.refresh();
+					//$feed.appendChild($liste);
+				}
+			};
+			xhttp.open("GET", "/api/api.php?f=getDangers", true);
+			xhttp.send();
+		}
+		setInterval("updateFeed()", 5000);
+	</script>
 	
 	<title>Carte des incidents</title>
 	<link rel="stylesheet" href="style.css" />

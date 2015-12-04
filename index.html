@@ -17,7 +17,7 @@
   
   
   
-  <body id="css-zen-garden">
+  <body onload="updateFeed()">
 	<script>
 		$types = ["fire", "water", "health", "weapon", "accident"];
 	
@@ -28,6 +28,7 @@
 					$feed = document.getElementById("feed-infos");
 					while($feed.firstChild){
 						$feed.removeChild($feed.firstChild);
+					}
 					$liste = document.createElement("ul");
 					$json = JSON.parse(xhttp.responseText);
 					for ($i =0; $i < $json.length; $i++)
