@@ -13,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,6 +37,7 @@ import com.google.android.gms.common.api.GoogleApiClient.Builder;
 import com.google.android.gms.location.LocationServices;
 import com.misrotostudio.www.myapplication.app.AppConfig;
 import com.misrotostudio.www.myapplication.app.AppController;
+import com.misrotostudio.www.myapplication.helper.EditTextCustom;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -47,7 +49,7 @@ public class DetailActivity extends AppCompatActivity implements
     private String android_id;
 
     private Spinner type_spinner;
-    private Button sig_button;
+    private ImageButton sig_button;
     private EditText comm_field;
     private JSONObject JSON_alerte;
 
@@ -158,10 +160,6 @@ public class DetailActivity extends AppCompatActivity implements
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 selected_type = String.valueOf(type_spinner.getSelectedItem());
                 posId = type_spinner.getSelectedItemPosition();
-                Toast.makeText(DetailActivity.this,
-                        "OnClickListener : " +
-                                "\nSpinner 1 : " + selected_type,
-                        Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -172,7 +170,7 @@ public class DetailActivity extends AppCompatActivity implements
         });
 
         //BUTTON SEND
-        sig_button = (Button) findViewById(R.id.signal_button);
+        sig_button = (ImageButton) findViewById(R.id.signal_button);
 
         sig_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -180,7 +178,12 @@ public class DetailActivity extends AppCompatActivity implements
                 commentaire = comm_field.getText().toString();
                 //setJObject();
                 sendAlerteReq();
-                Log.e("JSONSET", selected_type + location.getLongitude() + location.getLatitude() + commentaire);
+                Toast.makeText(DetailActivity.this,
+                        "Signalement envoyé!",
+                        Toast.LENGTH_SHORT).show();
+
+                Log.v("JSONSET", selected_type + location.getLongitude() + location.getLatitude() + commentaire);
+                finish();
             }
         });
     }
