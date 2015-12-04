@@ -23,8 +23,16 @@
 			var xhttp = new XMLHttpRequest();
 			xhttp.onreadystatechange = function() {
 				if (xhttp.readyState == 4 && xhttp.status == 200) {
-					$feed = document.getElementById("feed-infos").innerHTML = xhttp.responseText;
-					
+					$feed = document.getElementById("feed-infos"); = xhttp.responseText;
+					$liste = document.createElement("ul");
+					$json = JSON.parse(json);
+					var i;
+					for (i in json) {
+						$li = document.createElement("li");
+						$li.innerHTML = $i;
+						$liste.appendChild($li);
+					}
+					$feed.appendChild($liste);
 				}
 			};
 			xhttp.open("GET", "/Allert/api/api.php?f=getDangers", true);
