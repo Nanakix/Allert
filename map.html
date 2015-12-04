@@ -57,18 +57,18 @@ document.write('<script type="text/javascript" src="http://google-maps-utility-l
 			var xhttp = new XMLHttpRequest();
 			xhttp.onreadystatechange = function() {
 				if (xhttp.readyState == 4 && xhttp.status == 200) {
-					$feed = document.getElementById("feed-infos");
+					/*$feed = document.getElementById("feed-infos");
 					while($feed.firstChild){
 						$feed.removeChild($feed.firstChild);
 					}
-					$liste = document.createElement("ul");
+					$liste = document.createElement("ul");*/
 					$json = JSON.parse(xhttp.responseText);
 					for ($i =0; $i < $json.length; $i++)
 					{
 						$elem = $json[$i];
 						var marker = new google.maps.Marker({
 							position: new google.maps.LatLng($elem.pos_latitude, $elem.pos_longitude),
-							title: $elem.description
+							title: $elem.description + " (" + $elem.date + ")"
 							});
 						$markermanager.addMarker(marker, 0);
 					
