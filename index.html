@@ -19,6 +19,8 @@
   
   <body id="css-zen-garden">
 	<script>
+		$types = array("fire", "water", "health", "weapon", "accident");
+	
 		function updateFeed() {
 			var xhttp = new XMLHttpRequest();
 			xhttp.onreadystatechange = function() {
@@ -26,6 +28,13 @@
 					$feed = document.getElementById("feed-infos");
 					$liste = document.createElement("ul");
 					$json = JSON.parse(xhttp.responseText);
+					for ($i =0; $i < $json.length; $i++)
+					{
+						$li = document.createElement("li");
+						$li.data-type = $types[($i.type + 1)];
+						$li.innerHTML = $i.description + " (" + $i.date + ")";
+						$liste.appendChild($li);
+					}
 					alert($json.length);
 					$feed.appendChild($liste);
 				}
