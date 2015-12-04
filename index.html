@@ -31,13 +31,12 @@
 					for ($i =0; $i < $json.length; $i++)
 					{
 						$li = document.createElement("li");
-						//$attr = document.createAttribute("data-type");
-						//$attr.value = $types[($i.type - 1)];
-						//$li.setAttributeNode($attr);
-						$li.innerHTML = $i.description;// + " (" + $i.date + ")";
+						$attr = document.createAttribute("data-type");
+						$attr.value = $types[($json[$i].type - 1)];
+						$li.setAttributeNode($attr);
+						$li.innerHTML = $json[$i].description + " (" + $json[$i].date + ")";
 						$liste.appendChild($li);
 					}
-					alert($json.length);
 					$feed.appendChild($liste);
 				}
 			};
