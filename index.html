@@ -26,9 +26,9 @@
 					$feed = document.getElementById("feed-infos");
 					$liste = document.createElement("ul");
 					$json = JSON.parse(xhttp.responseText);
-					var i;
+					
 					$li = document.createElement("li");
-					$li.innerHTML = i[1].description;
+					$li.innerHTML = $json[1].description;
 					$liste.appendChild($li);
 					
 					$feed.appendChild($liste);
