@@ -23,9 +23,9 @@
 			var xhttp = new XMLHttpRequest();
 			xhttp.onreadystatechange = function() {
 				if (xhttp.readyState == 4 && xhttp.status == 200) {
-					$feed = document.getElementById("feed-infos"); = xhttp.responseText;
+					$feed = document.getElementById("feed-infos");
 					$liste = document.createElement("ul");
-					$json = JSON.parse(json);
+					$json = JSON.parse(xhttp.responseText);
 					var i;
 					for (i in json) {
 						$li = document.createElement("li");
