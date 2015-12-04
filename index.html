@@ -27,11 +27,10 @@
 					$liste = document.createElement("ul");
 					$json = JSON.parse(xhttp.responseText);
 					var i;
-					for (i in $json) {
-						$li = document.createElement("li");
-						$li.innerHTML = i.description;
-						$liste.appendChild($li);
-					}
+					$li = document.createElement("li");
+					$li.innerHTML = i[1].description;
+					$liste.appendChild($li);
+					
 					$feed.appendChild($liste);
 				}
 			};
