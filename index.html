@@ -26,15 +26,11 @@
 					$feed = document.getElementById("feed-infos");
 					$liste = document.createElement("ul");
 					$json = JSON.parse(xhttp.responseText);
-					for ($i in $json) {
-						$li = document.createElement("li");
-						$li.innerHTML = $i.description;
-						$liste.appendChild($li);
-					}
+					alert($json.length);
 					$feed.appendChild($liste);
 				}
 			};
-			xhttp.open("GET", "http://api.allert.tk/api.php?f=getDangers", true);
+			xhttp.open("GET", "/api/api.php?f=getDangers", true);
 			xhttp.send();
 		}
 	</script>
