@@ -212,7 +212,7 @@ footer a:link, footer a:visited {
 	height: 110px;
 	}
 
-.feed-infos{
+#feed-infos{
 	font-size:18px;
 	display:block;
 	margin-left:16%;
@@ -223,7 +223,7 @@ footer a:link, footer a:visited {
 }	
 	
 	
-.liste-infos{
+#liste-infos{
 	display:block;
 	font-size:25px;
 	position:relative;
