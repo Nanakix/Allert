@@ -17,15 +17,29 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
 import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
 import com.google.android.gms.common.api.GoogleApiClient.Builder;
 import com.google.android.gms.location.LocationServices;
+import com.misrotostudio.www.myapplication.app.AppConfig;
+import com.misrotostudio.www.myapplication.app.AppController;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class DetailActivity extends AppCompatActivity implements
         ConnectionCallbacks, OnConnectionFailedListener{
@@ -43,12 +57,23 @@ public class DetailActivity extends AppCompatActivity implements
     protected LocationManager mLocationManager;
     private LocationListener mLocationListener;
 
+    private ArrayList types_arrayL;
+    private String[] types_array;
+    private ArrayList types_level_arrayL;
+    private String[] types_level_array;
+    private String selected_type;
+
+    private String commentaire;
+
+    private int[] id;
+    private int posId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
+        commentaire = new String();
 
         //GOOGLELOCATE
         buildGoogleApiClient();
@@ -93,13 +118,26 @@ public class DetailActivity extends AppCompatActivity implements
 
 
         //Spinner SET
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            id = (int[]) extras.get("types_index");
+            types_arrayL = (ArrayList) extras.get("types_array");
+            types_array = new String[types_arrayL.size()];
+            types_level_arrayL = (ArrayList) extras.get("level_array");
+            types_level_array = new String[types_level_arrayL.size()];
+            types_array = (String[]) types_arrayL.toArray(types_array);
+            types_level_array = (String[]) types_level_arrayL.toArray(types_level_array);
+
+            Log.e("ARRAY", id.toString());
+
+        }
         android_id = Settings.Secure.getString(getApplicationContext().getContentResolver(),
                 Settings.Secure.ANDROID_ID);
 
         type_spinner = (Spinner) findViewById(R.id.type_spinner);
-        String[] types_array = {"Viol", "Feu", "Tsunami", "Autre"};
+        //String[] types_array = {"Viol", "Feu", "Tsunami", "Autre"};
 
-        ArrayAdapter<String> type_adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,types_array);
+        ArrayAdapter<String> type_adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, types_array);
 
         type_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
@@ -108,7 +146,9 @@ public class DetailActivity extends AppCompatActivity implements
         //EDIT TEXT SET
         comm_field = (EditText) findViewById(R.id.commentaire_text);
 
-        Editable text = comm_field.getText();
+        //commentaire = comm_field.getText().toString();
+
+        Log.e("COM", commentaire);
 
 
 
@@ -116,10 +156,11 @@ public class DetailActivity extends AppCompatActivity implements
 
         type_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String my_type = String.valueOf(type_spinner.getSelectedItem());
+                selected_type = String.valueOf(type_spinner.getSelectedItem());
+                posId = type_spinner.getSelectedItemPosition();
                 Toast.makeText(DetailActivity.this,
                         "OnClickListener : " +
-                                "\nSpinner 1 : " + my_type,
+                                "\nSpinner 1 : " + selected_type,
                         Toast.LENGTH_SHORT).show();
             }
 
@@ -136,7 +177,10 @@ public class DetailActivity extends AppCompatActivity implements
         sig_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                commentaire = comm_field.getText().toString();
                 //setJObject();
+                sendAlerteReq();
+                Log.e("JSONSET", selected_type + location.getLongitude() + location.getLatitude() + commentaire);
             }
         });
     }
@@ -155,14 +199,49 @@ public class DetailActivity extends AppCompatActivity implements
         }
     }
 
-    private void setJObject(){
+    private JSONObject setJObject(){
         try{
+            JSON_alerte = new JSONObject();
             JSON_alerte.put("id", android_id);
-            //JSON_alerte.put()
+            JSON_alerte.put("type", selected_type);
+            JSON_alerte.put("commentaire", commentaire);
+            JSONObject tmp = new JSONObject();
+            tmp.put("longitude", location.getLongitude());
+            tmp.put("latitude", location.getLatitude());
+            JSON_alerte.put("coord", tmp);
+
         }catch (JSONException e){
             e.printStackTrace();
         }
+
+        return JSON_alerte;
+
     }
+
+    protected void sendAlerteReq(){
+        String tag_string_req = "set_alert_req";
+        String uri = new String(AppConfig.api_url + "?f=signaler&id_type=" + id[posId] + "&pos_latitude=" + location.getLatitude() + "&pos_longitude=" + location.getLongitude() + "&description=" + commentaire);
+        Log.e("S", uri);
+
+        StringRequest request = new StringRequest(Request.Method.GET, uri,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.e("SEND RES", response.toString() + " " +id[posId]);
+
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //mTextView.setText("That didn't work!");
+            }
+        });
+// Add the request to the RequestQueue.
+        AppController.getInstance().addToRequestQueue(request, tag_string_req);
+    }
+
+
 
     protected synchronized void buildGoogleApiClient() {
         mGoogleApiClient = new GoogleApiClient.Builder(this)
