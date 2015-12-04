@@ -23,18 +23,18 @@
                 die('Erreur : '.$e->getMessage());
             }
 
-            $reponse = $bdd->prepare('INSERT INTO  Danger VALUES(:id, :pos_longitude, :pos_latitude, :description, :type, :vote_vrai, :vote_faux, :ratio, :date)');
+            $reponse = $bdd->prepare('INSERT INTO  Danger VALUES(:id, :pos_longitude, :pos_latitude, :description, :id_type, :vote_vrai, :vote_faux, :ratio, :date)');
 
             $reponse->execute(array(
                 'id' => $_GET['id_categorie'],
                 'pos_longitude' => $_GET['pos_longitude'],
                 'pos_latitude' => $_GET['pos_latitude'],
                 'description' => $_POST['description'],
-                'type' => $_GET['id_type'],
+                'id_type' => $_GET['id_type'],
                 'vote_vrai' => '',
                 'vote_faux' => '',
                 'ratio' => '',
-                'date' => ''));
+                'date' => date("Y-m-d H:i:s")));
                 
             //echo json_encode($reponse->fetchAll(PDO::FETCH_ASSOC));
             echo 'OK';
@@ -68,7 +68,7 @@
             die('Erreur : '.$e->getMessage());
         }
 
-        $reponse = $bdd->query('SELECT * FROM Danger');
+        $reponse = $bdd->query('SELECT * FROM Danger ORDER BY date DESC');
         echo json_encode($reponse->fetchAll(PDO::FETCH_ASSOC));
 
         $reponse->closeCursor(); 
