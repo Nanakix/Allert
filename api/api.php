@@ -11,8 +11,8 @@
     {
         if( isset($_GET['id_type']) && $_GET['id_type'] != NULL &&
             isset($_GET['pos_latitude']) && $_GET['pos_latitude'] != NULL &&
-            isset($_GET['pos_longitude']) && $_GET['pos_longitude'] != NULL)
-            //isset($_POST['description']) && $_POST['description'] != NULL)
+            isset($_GET['pos_longitude']) && $_GET['pos_longitude'] != NULL &&
+            isset($_GET['description']) && $_GET['description'] != NULL)
         {
             try
             {
@@ -29,7 +29,7 @@
                 'id' => $_GET['id_categorie'],
                 'pos_longitude' => $_GET['pos_longitude'],
                 'pos_latitude' => $_GET['pos_latitude'],
-                'description' => 'void',
+                'description' => $_GET['description'],
                 'id_type' => $_GET['id_type'],
                 'vote_vrai' => '',
                 'vote_faux' => '',
@@ -97,7 +97,7 @@
     {
         try
         {
-            $bdd = new PDO('mysql:host=localhost;dbname=allert;charset=utf8', 'root', 'mysql');
+            $bdd = new PDO('mysql:host=localhost;dbname=allert;charset=utf8', 'root', '');
         }
         catch(Exception $e)
         {
