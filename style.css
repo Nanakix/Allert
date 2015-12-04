@@ -1,4 +1,4 @@
-/* css Zen Garden default style v1.02 */
+/* /* css Zen Garden default style v1.02 */
 /* css released under Creative Commons License - http://creativecommons.org/licenses/by-nc-sa/1.0/  */
 
 /* This file based on 'Tranquille' by Dave Shea */
@@ -211,8 +211,31 @@ footer a:link, footer a:visited {
 	width: 148px; 
 	height: 110px;
 	}
+
+.feed-infos{
+	font-size:18px;
+	display:block;
+	margin-left:16%;
+	border-width:1px 2px 3px 2px;
+	border-style:solid dotted;
+	border-color:black red;
+	padding: 10px;
+}	
+	
+	
+.liste-infos{
+	display:block;
+	font-size:25px;
+	position:relative;
+	float:left;
+	 border-width:1px 2px 3px 2px;
+ border-style:solid dotted;
+ border-color:black red;
+ padding: 10px;
+}
 	
 li[data-type="fire"]{
+	font-size:15px;
 	list-style-type:none;
 	background-image:url('images_nuit/danger_feu.png');
 	background-repeat:no-repeat;
@@ -222,6 +245,7 @@ li[data-type="fire"]{
 }	
 	
 li[data-type="water"]{
+	font-size:15px;
 	list-style-type:none;
 	background-image:url('images_nuit/danger_vague.png');
 	background-repeat:no-repeat;
@@ -230,6 +254,7 @@ li[data-type="water"]{
 }
 
 li[data-type="health"]{
+	font-size:15px;
 	list-style-type:none;
 	background-image:url('images_nuit/danger_sante.png');
 	background-repeat:no-repeat;
@@ -238,6 +263,7 @@ li[data-type="health"]{
 }
 
 li[data-type="weapon"]{
+	font-size:15px;
 	list-style-type:none;
 	background-image:url('images_nuit/danger_arme.png');
 	background-repeat:no-repeat;
@@ -247,6 +273,7 @@ li[data-type="weapon"]{
 
 
 li[data-type="accident"]{
+	font-size:15px;
 	list-style-type:none;
 	background-image:url('images_nuit/danger_accident.png');
 	background-repeat:no-repeat;
@@ -261,3 +288,8 @@ li[data-type="accident"]{
 	margin-left:auto;
 	margin-right:auto;
 }
+
+
+
+
+ 
