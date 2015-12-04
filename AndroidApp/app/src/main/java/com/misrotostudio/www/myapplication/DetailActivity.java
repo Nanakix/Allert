@@ -136,7 +136,7 @@ public class DetailActivity extends AppCompatActivity implements
 
         //EDIT TEXT SET
         comm_field = (EditText) findViewById(R.id.commentaire_text);
-        
+
         //GET SPINN
 
         type_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
