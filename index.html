@@ -31,7 +31,7 @@
 					for ($i =0; $i < $json.length; $i++)
 					{
 						$li = document.createElement("li");
-						$li.data-type = $types[($i.type + 1)];
+						$li.data-type = $types[($i.type - 1)];
 						$li.innerHTML = $i.description + " (" + $i.date + ")";
 						$liste.appendChild($li);
 					}
