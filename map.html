@@ -68,7 +68,7 @@ document.write('<script type="text/javascript" src="http://google-maps-utility-l
 						$elem = $json[$i];
 						var marker = new google.maps.Marker({
 							position: new google.maps.LatLng($elem.pos_latitude, $elem.pos_longitude),
-							title: $elem.description
+							title: $elem.description + " (" + $elem.date + ")"
 							});
 						$markermanager.addMarker(marker, 0);
 					
