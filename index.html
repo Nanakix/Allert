@@ -26,6 +26,8 @@
 			xhttp.onreadystatechange = function() {
 				if (xhttp.readyState == 4 && xhttp.status == 200) {
 					$feed = document.getElementById("feed-infos");
+					while($feed.firstChild){
+						$feed.removeChild($feed.firstChild);
 					$liste = document.createElement("ul");
 					$json = JSON.parse(xhttp.responseText);
 					for ($i =0; $i < $json.length; $i++)
@@ -43,6 +45,7 @@
 			xhttp.open("GET", "/api/api.php?f=getDangers", true);
 			xhttp.send();
 		}
+		setInterval("updateFeed()", 5000);
 	</script>
   
 		<header role="banner">
