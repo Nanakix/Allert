@@ -28,7 +28,7 @@
 					$json = JSON.parse(xhttp.responseText);
 					for ($i in $json) {
 						$li = document.createElement("li");
-						$li.innerHTML = i.description;
+						$li.innerHTML = $i.description;
 						$liste.appendChild($li);
 					}
 					$feed.appendChild($liste);
