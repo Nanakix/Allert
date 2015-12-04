@@ -2,7 +2,7 @@
     // Reporte toutes les erreurs PHP
     error_reporting(-1);
 
-    $functions = array("signaler", "voter", "getDangers", "getType", "getTypes");
+    $functions = array("signaler", "voter", "getDangers", "getTypeWithId", "getTypes");
 
     /*function signaler()
     {
@@ -29,21 +29,31 @@
         }
     
     }
-
-    function getType()
+    */
+    function getTypeWithId()
     {
-        if(!((empty($_POST['id']))))
+        if(isset($_GET['id']) && $_GET['id'] != NULL)
+        try
         {
-            
+            $bdd = new PDO('mysql:host=localhost;dbname=allert;charset=utf8', 'root', 'mysql');
+        }
+        catch(Exception $e)
+        {
+            die('Erreur : '.$e->getMessage());
         }
 
+        $reponse = $bdd->prepare('SELECT * FROM TypeDanger WHERE id = :id');
+        $reponse->execute(array('id' => $_GET['id']));
+        echo json_encode($reponse->fetchAll(PDO::FETCH_ASSOC));
+
+        $reponse->closeCursor();
     }
-    */
+
     function getTypes()
     {
         try
         {
-            $bdd = new PDO('mysql:host=localhost;dbname=allert;charset=utf8', 'root', '');
+            $bdd = new PDO('mysql:host=localhost;dbname=allert;charset=utf8', 'root', 'mysql');
         }
         catch(Exception $e)
         {
