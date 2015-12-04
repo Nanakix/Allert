@@ -1,16 +1,53 @@
 <?php
-    require("bdd.php");
+    // Reporte toutes les erreurs PHP
+    error_reporting(-1);
 
-    $functions = array("signaler", "voter", "getDangers", "getType", "getTypes");
+    // Database settings
+    $db_password = 'mysql';
 
-    /*function signaler()
+    $functions = array("signaler", "voter", "getDangers", "getTypeWithId", "getTypes");
+
+    function signaler()
     {
-        if(!((empty($_POST['id'])) || (empty($_POST['pos'])) || (empty($_POST['type'])) || (empty($_POST['description']))))
+        if( isset($_GET['id_type']) && $_GET['id_type'] != NULL &&
+            isset($_GET['pos_latitude']) && $_GET['pos_latitude'] != NULL &&
+            isset($_GET['pos_longitude']) && $_GET['pos_longitude'] != NULL &&
+            isset($_GET['description']) && $_GET['description'] != NULL)
         {
-            
+            try
+            {
+                $bdd = new PDO('mysql:host=localhost;dbname=allert;charset=utf8', 'root', 'mysql');
+            }
+            catch(Exception $e)
+            {
+                die('Erreur : '.$e->getMessage());
+            }
+
+            $reponse = $bdd->prepare('INSERT INTO  Danger VALUES(:id, :pos_longitude, :pos_latitude, :description, :id_type, :vote_vrai, :vote_faux, :ratio, :date)');
+
+            $reponse->execute(array(
+                'id' => $_GET['id_categorie'],
+                'pos_longitude' => $_GET['pos_longitude'],
+                'pos_latitude' => $_GET['pos_latitude'],
+                'description' => $_GET['description'],
+                'id_type' => $_GET['id_type'],
+                'vote_vrai' => '',
+                'vote_faux' => '',
+                'ratio' => '',
+                'date' => date("Y-m-d H:i:s")));
+                
+            //echo json_encode($reponse->fetchAll(PDO::FETCH_ASSOC));
+            echo 'OK';
+            $reponse->closeCursor();
         }
+        else
+        {
+            echo 'ERROR';
+        }
+        
     }
 
+    /*
     function voter()
     {
         if(!((empty($_POST['id-phone'])) || (empty($_POST['id-danger'])) || (empty($_POST['vrai'])) || (empty($_POST['pos']))))
@@ -19,43 +56,58 @@
         }
     
     }
-
+    */
     function getDangers()
     {
-        if(!(empty($_POST['pos1'])) || (empty($_POST['pos2']))))
+        try
         {
-            
+            $bdd = new PDO('mysql:host=localhost;dbname=allert;charset=utf8', 'root', 'mysql');
         }
-    
+        catch(Exception $e)
+        {
+            die('Erreur : '.$e->getMessage());
+        }
+
+        $reponse = $bdd->query('SELECT * FROM Danger ORDER BY date DESC');
+        echo json_encode($reponse->fetchAll(PDO::FETCH_ASSOC));
+
+        $reponse->closeCursor(); 
     }
 
-    function getType()
+    function getTypeWithId()
     {
-        if(!((empty($_POST['id']))))
+        if(isset($_GET['id']) && $_GET['id'] != NULL)
+        try
         {
-            
+            $bdd = new PDO('mysql:host=localhost;dbname=allert;charset=utf8', 'root', 'mysql');
+        }
+        catch(Exception $e)
+        {
+            die('Erreur : '.$e->getMessage());
         }
 
+        $reponse = $bdd->prepare('SELECT * FROM TypeDanger WHERE id = :id');
+        $reponse->execute(array('id' => $_GET['id']));
+        echo json_encode($reponse->fetchAll(PDO::FETCH_ASSOC));
+
+        $reponse->closeCursor();
     }
-    */
+
     function getTypes()
     {
-        echo 'getTypes';
-        $reponse = $bdd->query('SELECT * FROM TypeDanger');
-
-        // On affiche chaque entrée une à une
-        while ($donnees = $reponse->fetch())
+        try
         {
-        ?>
-            <p>
-            <?php echo $donnees['id']; ?><br />
-            <?php echo $donnees['nom']; ?><br />
-            <?php echo $donnees['coef_de_gravite']; ?> <br />
-           </p>
-        <?php
+            $bdd = new PDO('mysql:host=localhost;dbname=allert;charset=utf8', 'root', 'mysql');
+        }
+        catch(Exception $e)
+        {
+            die('Erreur : '.$e->getMessage());
         }
 
-        $reponse->closeCursor(); // Termine le traitement de la requête
+        $reponse = $bdd->query('SELECT * FROM TypeDanger');
+        echo json_encode($reponse->fetchAll(PDO::FETCH_ASSOC));
+
+        $reponse->closeCursor();
     }
 
     /* Appelle la fonction d'e l'api appropriée */

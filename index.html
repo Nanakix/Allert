@@ -11,28 +11,55 @@
     <script src="https://maps.googleapis.com/maps/api/js"></script>
 	<title>Allert</title>
 	<link rel="stylesheet" href="style.css" />
-	
+	<img src="images_nuit/logo_site.png" alt="HTML5 Icon" style="width:256px;height:150px;">
 	<h1 align="center"> Allert </h1>
   </head>
   
   
   
   <body id="css-zen-garden">
+	<script>
+		$types = ["fire", "water", "health", "weapon", "accident"];
+	
+		function updateFeed() {
+			var xhttp = new XMLHttpRequest();
+			xhttp.onreadystatechange = function() {
+				if (xhttp.readyState == 4 && xhttp.status == 200) {
+					$feed = document.getElementById("feed-infos");
+					while($feed.firstChild){
+						$feed.removeChild($feed.firstChild);
+					$liste = document.createElement("ul");
+					$json = JSON.parse(xhttp.responseText);
+					for ($i =0; $i < $json.length; $i++)
+					{
+						$li = document.createElement("li");
+						$attr = document.createAttribute("data-type");
+						$attr.value = $types[($json[$i].type - 1)];
+						$li.setAttributeNode($attr);
+						$li.innerHTML = $json[$i].description + " (" + $json[$i].date + ")";
+						$liste.appendChild($li);
+					}
+					$feed.appendChild($liste);
+				}
+			};
+			xhttp.open("GET", "/api/api.php?f=getDangers", true);
+			xhttp.send();
+		}
+		setInterval("updateFeed()", 5000);
+	</script>
   
-  <section class="intro" id="zen-intro">
 		<header role="banner">
 			
 			<h2 align="center"><a href="map.html">CARTE</a></h2>
 			
 		</header>
 
-			
-			
+	
 		
 
 		
-		<div class="liste-infos">
-			<ul>
+		<div id="liste-infos">
+			<ul>Légende
 			<li data-type="fire">DU FEU ! </li> 
 			<li data-type="water"> DE L'EAU ! </li>
 			<li data-type="health"> DE LA MALADIE ! </li>
@@ -43,9 +70,9 @@
 			
 		</div>
 		
-  
-  
-    <div id="map"></div>
+		<div id="feed-infos">
+			
+		</div>
 
   </body>
   
